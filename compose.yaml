@@ -1,0 +1,21 @@
+services:
+  model-service:
+    container_name: model-service
+    build:
+      context: ./model-service
+    environment:
+      ENV: production
+    ports:
+      - "8001:8001"
+
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: ./api-gateway
+    environment:
+      MODEL_SERVICE_URL: http://model-service:8001
+      ENV: production
+    depends_on:
+      - model-service
+    ports:
+      - "8000:8000"

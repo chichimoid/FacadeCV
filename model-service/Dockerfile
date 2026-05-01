@@ -1,0 +1,9 @@
+FROM python:3.11-slim
+
+WORKDIR /src
+COPY requirements.txt .
+RUN pip install --upgrade pip setuptools wheel && pip install --no-cache-dir -r requirements.txt
+COPY models ./models
+COPY src ./src
+
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8001"]

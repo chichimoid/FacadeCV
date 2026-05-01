@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Фасады</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Фасады</h1>
+    <p class="subtitle">Классификация нарушений по фотографиям фасадов зданий, городских сооружений, дорог и т.д.</p>
+
+    <div class="card">
+      <form action="/submit" method="post" enctype="multipart/form-data">
+        <input type="file" name="files" accept="image/*" multiple required />
+        <button type="submit">Отправить</button>
+      </form>
+    </div>
+
+    {% if job_id %}
+    <div class="card">
+      <h2>Job</h2>
+      <p><strong>ID:</strong> <span id="job-id">{{ job_id }}</span></p>
+      <p><strong>Status:</strong> <span id="status">connecting...</span></p>
+      <p><strong>Progress:</strong> <span id="progress">0</span>%</p>
+      <p><strong>Message:</strong> <span id="message">waiting...</span></p>
+      <p><strong>Processed:</strong> <span id="processed">0</span> / <span id="total">0</span></p>
+
+      <div class="progress-bar">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Result</h2>
+      <pre id="result-box">Waiting for completion...</pre>
+    </div>
+
+    <script>
+      const jobId = "{{ job_id }}";
+      const statusEl = document.getElementById("status");
+      const progressEl = document.getElementById("progress");
+      const messageEl = document.getElementById("message");
+      const processedEl = document.getElementById("processed");
+      const totalEl = document.getElementById("total");
+      const resultBox = document.getElementById("result-box");
+      const progressFill = document.getElementById("progress-fill");
+
+      function applyState(data) {
+        statusEl.textContent = data.status;
+        progressEl.textContent = data.progress;
+        messageEl.textContent = data.message;
+        processedEl.textContent = data.processed_images;
+        totalEl.textContent = data.total_images;
+        progressFill.style.width = `${data.progress}%`;
+      }
+
+      const source = new EventSource(`/jobs/${jobId}/events`);
+
+      source.addEventListener("job_created", (event) => {
+        const data = JSON.parse(event.data);
+        applyState(data);
+      });
+
+      source.addEventListener("job_updated", (event) => {
+        const data = JSON.parse(event.data);
+        applyState(data);
+      });
+
+      source.addEventListener("job_completed", async (event) => {
+        const data = JSON.parse(event.data);
+        applyState(data);
+
+        const res = await fetch(`/jobs/${jobId}/result`);
+        const json = await res.json();
+        resultBox.textContent = JSON.stringify(json, null, 2);
+
+        source.close();
+      });
+
+      source.addEventListener("job_failed", (event) => {
+        const data = JSON.parse(event.data);
+        applyState(data);
+        resultBox.textContent = `Failed: ${data.error || "unknown error"}`;
+        source.close();
+      });
+
+    </script>
+    {% endif %}
+  </div>
+</body>
+</html>
