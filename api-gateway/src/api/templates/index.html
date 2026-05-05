@@ -83,12 +83,21 @@
       });
 
 
-      function confidenceClass(value) {
-        if (value >= 0.95) return "confidence-very-high";
-        if (value >= 0.8) return "confidence-high";
-        if (value >= 0.5) return "confidence-medium";
-        if (value >= 0.25) return "confidence-low";
-        return "confidence-very-low";
+      function confidenceGreen(value) {
+        if (value >= 0.95) return "confidence-green-very-high";
+        if (value >= 0.8) return "confidence-green-high";
+        if (value >= 0.5) return "confidence-green-medium";
+        if (value >= 0.25) return "confidence-green-low";
+        if (value >= 0.1) return "confidence-green-very-low";
+        return "confidence-negligible";
+      }
+
+      function confidenceRed(value) {
+        if (value >= 0.95) return "confidence-red-very-high";
+        if (value >= 0.8) return "confidence-red-high";
+        if (value >= 0.5) return "confidence-red-medium";
+        if (value >= 0.25) return "confidence-red-low";
+        return "confidence-red-very-low";
       }
 
       function normalizePredictions(predictions) {
@@ -109,7 +118,7 @@
         let html = "";
 
         json.forEach((row, index) => {
-          const imageName = row.image || row.image_name || row.filename || `Изображение ${index + 1}`;
+          const imageName = row.image;
           const predictions = normalizePredictions(row.predictions);
 
           html += `
@@ -119,22 +128,37 @@
               <table class="result-table">
                 <thead>
                   <tr>
-                    <th>Класс</th>
+                    <th>Предсказание</th>
                     <th>Уверенность</th>
                   </tr>
                 </thead>
                 <tbody>
           `;
 
-          predictions.forEach((prediction) => {
+          predictions.forEach((prediction, index) => {
             const confidence = Number(prediction.confidence);
             const percent = confidence * 100;
+
+            if (index == 0) {
+              html += `
+                <tr>
+                  <td>${prediction.label}</td>
+                  <td>
+                    <span class="confidence-badge ${confidenceGreen(confidence)}">
+                      ${percent.toFixed(1)}%
+                    </span>
+                  </td>
+                </tr>
+              `;
+
+              return;
+            }
 
             html += `
               <tr>
                 <td>${prediction.label}</td>
                 <td>
-                  <span class="confidence-badge ${confidenceClass(confidence)}">
+                  <span class="confidence-badge ${confidenceRed(confidence)}">
                     ${percent.toFixed(1)}%
                   </span>
                 </td>

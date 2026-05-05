@@ -6,8 +6,11 @@ def process_result(result_json: dict) -> list:
     processed_img_preds = []
     for d in img_preds:
         img, pred = d.values()
-        top = dict(reversed(sorted(pred.items(), key=lambda item: item[1])))
         possible = {}
+        key_0 = list(pred.keys())[0]
+        possible[key_0] = pred.pop(key_0)
+
+        top = dict(reversed(sorted(pred.items(), key=lambda item: item[1])))
         for k, v in top.items():
             if v > _possibility_threshold:
                 possible[k] = v

@@ -134,24 +134,48 @@ body {
   text-align: center;
 }
 
-.confidence-very-high {
-  background-color: #63d86d;
+.confidence-green-very-high {
+  background-color: #04ff3f;
 }
 
-.confidence-high {
-  background-color: #a7dc7b;
+.confidence-green-high {
+  background-color: #38da4b;
 }
 
-.confidence-medium {
-  background-color: #d6e3a8;
+.confidence-green-medium {
+  background-color: #6bc751;
 }
 
-.confidence-low {
-  background-color: #e6b986;
+.confidence-green-low {
+  background-color: #8dc367;
 }
 
-.confidence-very-low {
-  background-color: #cc7859;
+.confidence-green-very-low {
+  background-color: #99b480;
+}
+
+.confidence-negligible {
+  background-color: #ababab;
+}
+
+.confidence-red-very-high {
+  background-color: #e31212;
+}
+
+.confidence-red-high {
+  background-color: #de483b;
+}
+
+.confidence-red-medium {
+  background-color: #dc614c;
+}
+
+.confidence-red-low {
+  background-color: #e08278;
+}
+
+.confidence-red-very-low {
+  background-color: #c79287;
 }
 
 pre {
