@@ -8,7 +8,6 @@ from src.dependencies import get_job_storage
 
 import asyncio
 import json
-from typing import List
 
 import os
 
@@ -21,7 +20,7 @@ async def health():
     return {"status": "ok"}
 
 @router.post("/internal/jobs", response_model=JobCreateResponse)
-async def create_job(files: List[UploadFile] = File(...), job_storage=Depends(get_job_storage)):
+async def create_job(files: list[UploadFile] = File(...), job_storage=Depends(get_job_storage)):
     if not files:
         raise HTTPException(status_code=400, detail="No files uploaded")
 

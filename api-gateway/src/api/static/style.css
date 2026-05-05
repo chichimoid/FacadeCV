@@ -24,13 +24,42 @@ body {
   box-shadow: 0 4px 14px rgba(0,0,0,0.08);
 }
 
-button {
-  border: none;
+.upload-form {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 8px;
   background: #111827;
   color: white;
-  padding: 10px 16px;
-  border-radius: 8px;
+  text-decoration: none;
+  border: none;
   cursor: pointer;
+}
+
+.btn:hover {
+  opacity: 0.92;
+}
+
+.json_btn {
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #111827;
+  color: white;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.json_btn:hover {
+  opacity: 0.92;
 }
 
 .progress-bar {
@@ -47,6 +76,82 @@ button {
   width: 0%;
   background: #3b3b3b;
   transition: width 0.3s ease;
+}
+
+.image-result-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 18px;
+  background: #fafafa;
+}
+
+.image-result-card h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.result-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.result-table th,
+.result-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.result-table th:nth-child(1),
+.result-table td:nth-child(1) {
+  width: 85%;
+}
+
+.result-table th:nth-child(2),
+.result-table td:nth-child(2) {
+  width: 15%;
+  text-align: center;
+}
+
+.result-table th {
+  background: #f3f4f6;
+  font-weight: 700;
+}
+
+.confidence-badge {
+  display: inline-block;
+  min-width: 76px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.confidence-very-high {
+  background-color: #63d86d;
+}
+
+.confidence-high {
+  background-color: #a7dc7b;
+}
+
+.confidence-medium {
+  background-color: #d6e3a8;
+}
+
+.confidence-low {
+  background-color: #e6b986;
+}
+
+.confidence-very-low {
+  background-color: #cc7859;
 }
 
 pre {

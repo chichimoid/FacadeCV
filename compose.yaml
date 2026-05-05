@@ -1,5 +1,6 @@
 services:
   model-service:
+    #image: facade-app-model-service:latest
     container_name: model-service
     build:
       context: ./model-service
@@ -9,6 +10,7 @@ services:
       - "8001:8001"
 
   api-gateway:
+    #image: facade-app-api-gateway:latest
     container_name: api-gateway
     build:
       context: ./api-gateway

@@ -11,13 +11,12 @@ from src.services.classifier import Classifier
 
 from src.storage.file_storage import cleanup_job_files
 
-from typing import List
 from torchvision.datasets import VisionDataset
 from pathlib import Path
 from PIL import Image
 
 class LoaderDataset(VisionDataset):
-    def __init__(self, image_paths: List[Path], transform = None) -> None:
+    def __init__(self, image_paths: list[Path], transform = None) -> None:
         super().__init__(transform=transform)
         self.image_paths = image_paths
         self.transform = transform
@@ -61,7 +60,7 @@ class JobProcesser:
                 q.task_done()
 
     def _process_job(self, job_id: str, payload: dict) -> None:
-        image_paths: List[Path] = payload["image_paths"]
+        image_paths: list[Path] = payload["image_paths"]
         total_images = len(image_paths)
         total_batches = max(1, math.ceil(total_images / self.batch_size))
 

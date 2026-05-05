@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import List
 import shutil
 
 from fastapi import UploadFile
@@ -7,13 +6,13 @@ from fastapi import UploadFile
 ROOT = Path("data")
 MODELS_ROOT = Path("models")
 UPLOAD_ROOT = ROOT / "tmp_uploads"
-MAIN_MODEL = "convnext_s_atomic_4.pth"
+MAIN_MODEL = "convnext_s_atomic_5.pth"
 
-async def save_job_files(job_id: str, files: List[UploadFile]) -> List[Path]:
+async def save_job_files(job_id: str, files: list[UploadFile]) -> list[Path]:
     job_dir = UPLOAD_ROOT / job_id / "input"
     job_dir.mkdir(parents=True, exist_ok=True)
 
-    saved_paths: List[Path] = []
+    saved_paths: list[Path] = []
 
     for idx, file in enumerate(files):
         path = job_dir / file.filename

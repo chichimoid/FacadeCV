@@ -1,8 +1,7 @@
 fastapi
 uvicorn[standard]
 python-multipart
-pydantic==1.10.13
-pillow
+pydantic
 torch
 torchvision
 pathlib

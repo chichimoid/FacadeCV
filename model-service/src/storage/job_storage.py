@@ -1,7 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from threading import Lock
-from typing import Any, Dict, List
 import queue
 import uuid
 
@@ -10,7 +9,7 @@ from enum import Enum
 @dataclass
 class JobEvent:
     event: str
-    data: Dict[str, Any]
+    data: dict[str, object]
     timestamp: str
 
 @dataclass
@@ -25,23 +24,23 @@ class JobStatus(Enum):
 @dataclass
 class JobRecord:
     job_id: str
-    payload: Dict[str, Any] = field(default_factory=dict)
+    payload: dict[str, object] = field(default_factory=dict)
     status: JobStatus = field(default_factory=lambda: JobStatus.INITIALIZING)
     progress: int = 0
     message: str = "Initializing job"
     total_images: int = 0
     processed_images: int = 0
     error: str = None
-    result: List[Dict[str, Any]] = None
+    result: list[dict[str, object]] = None
     created_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     updated_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
-    events: List[JobEvent] = field(default_factory=list)
+    events: list[JobEvent] = field(default_factory=list)
 
 
 class JobStorage:
     def __init__(self) -> None:
         self._lock = Lock()
-        self._jobs: Dict[str, JobRecord] = {}
+        self._jobs: dict[str, JobRecord] = {}
         self._task_queue: "queue.Queue[dict]" = queue.Queue()
 
     def create_job(self, image_count: int, payload: dict) -> JobRecord:
@@ -77,7 +76,7 @@ class JobStorage:
         with self._lock:
             return self._jobs.get(job_id)
 
-    def get_result(self, job_id: str) -> List[Dict[str, Any]]:
+    def get_result(self, job_id: str) -> list[dict[str, object]]:
         with self._lock:
             job = self._jobs.get(job_id)
             return None if job is None else job.result
@@ -115,7 +114,7 @@ class JobStorage:
                 data=self._public_status(job),
             )
 
-    def complete_job(self, job_id: str, result: List[Dict[str, Any]]) -> None:
+    def complete_job(self, job_id: str, result: list[dict[str, object]]) -> None:
         with self._lock:
             job = self._jobs[job_id]
             job.status = JobStatus.COMPLETED
@@ -151,7 +150,7 @@ class JobStorage:
             events = job.events[last_index:]
             return events, len(job.events)
 
-    def _append_event_locked(self, job_id: str, event: str, data: Dict[str, Any]) -> None:
+    def _append_event_locked(self, job_id: str, event: str, data: dict[str, object]) -> None:
         job = self._jobs[job_id]
         job.events.append(
             JobEvent(
@@ -161,7 +160,7 @@ class JobStorage:
             )
         )
 
-    def _public_status(self, job: JobRecord) -> Dict[str, Any]:
+    def _public_status(self, job: JobRecord) -> dict[str, object]:
         return {
             "job_id": job.job_id,
             "status": job.status.value,

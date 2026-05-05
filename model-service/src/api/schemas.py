@@ -1,4 +1,3 @@
-from typing import List, Dict
 from pydantic import BaseModel
 
 class JobCreateResponse(BaseModel):
@@ -16,9 +15,9 @@ class JobStatusResponse(BaseModel):
 
 class ImagePrediction(BaseModel):
     image: str
-    predictions: Dict[str, float]
+    predictions: dict[str, float]
 
 class JobResultResponse(BaseModel):
     job_id: str
     status: str
-    result: List[ImagePrediction]
+    result: list[ImagePrediction]

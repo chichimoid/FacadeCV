@@ -1,11 +1,10 @@
 import httpx
-from typing import List
 
 class ModelClient:
     def __init__(self, base_url: str) -> None:
         self.base_url = base_url.rstrip("/")
 
-    async def create_job(self, files: List[tuple[str, bytes, str]]) -> dict:
+    async def create_job(self, files: list[tuple[str, bytes, str]]) -> dict:
         multipart = []
         for filename, content, content_type in files:
             multipart.append(
@@ -27,6 +26,7 @@ class ModelClient:
         async with httpx.AsyncClient(timeout=30.0) as client:
             response = await client.get(f"{self.base_url}/internal/jobs/{job_id}/result")
             response.raise_for_status()
+
             return response.json()
 
     async def stream_events(self, job_id: str):

@@ -17,9 +17,9 @@ app = FastAPI(
 job_storage = JobStorage()
 deviceService = DeviceService()
 classifier = Classifier(device_service=deviceService)
-runner = JobProcesser(job_storage=job_storage, classifier=classifier, batch_size=32)
+runner = JobProcesser(job_storage=job_storage, classifier=classifier, batch_size=8)
 
-app.state.job_storage = job_storage # придумать что-то менее странное
+app.state.job_storage = job_storage
 app.include_router(router)
 
 @app.on_event("startup")
