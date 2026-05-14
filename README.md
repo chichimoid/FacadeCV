@@ -1,4 +1,4 @@
-[facade-app.chichimoid.com](facade-app.chichimoid.com) \
+[facade-app.chichimoid.com](facade-app.chichimoid.com)
 ### Facade
 Модель и веб-приложение для классификации нарушений в городском благоустройстве по фотографиям. \
 Приложение собирается через docker compose up, в папке research итоговые метрики и хаотичные исследовательские данные. 
