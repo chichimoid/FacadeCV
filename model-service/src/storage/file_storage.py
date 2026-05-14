@@ -6,7 +6,7 @@ from fastapi import UploadFile
 ROOT = Path("data")
 MODELS_ROOT = Path("models")
 UPLOAD_ROOT = ROOT / "tmp_uploads"
-MAIN_MODEL = "convnext_s_atomic_5.pth"
+MAIN_MODEL = "main.pt"
 
 async def save_job_files(job_id: str, files: list[UploadFile]) -> list[Path]:
     job_dir = UPLOAD_ROOT / job_id / "input"

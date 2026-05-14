@@ -22,9 +22,7 @@ class Classifier:
 
         self.device = device_service.get_device()
 
-        model = models.convnext_small()
-        model.classifier[2] = nn.Linear(model.classifier[2].in_features, len(self.classes))
-        model.load_state_dict(torch.load(file_storage.get_main_model(), weights_only=True, map_location=self.device))
+        model = torch.jit.load(file_storage.get_main_model(), map_location=self.device)
         model.to(self.device)
         model.eval()
 
